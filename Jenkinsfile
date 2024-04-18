@@ -6,14 +6,14 @@ pipeline {
             agent {
                 docker {
                   label 'jenkinsworker00'
-                  image 'golang:1.21.0'
+                  image 'marica/golang:1.21.0-patch'
                   reuseNode true
                 }
             }
             steps {
                 script {
                   sh '''
-                  apt update && apt install -y patch
+                  export GOCACHE=$WORKSPACE/.cache/go-build
                   make build-linux-with-rclone
                   '''
                 }  
