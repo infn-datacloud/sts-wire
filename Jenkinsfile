@@ -1,5 +1,19 @@
+def getReleaseVersion(String tagName) {
+    if (tagName) {
+        return tagName.replaceAll(/^v/, '')
+    } else {
+        return null
+    }
+}
+
+
 pipeline {
   agent none
+
+  environment {
+    // Set RELEASE_VERSION only if TAG_NAME is set
+    RELEASE_VERSION = getReleaseVersion(TAG_NAME)
+  }
   
   stages {
 
@@ -41,7 +55,7 @@ pipeline {
               nexusVersion: 'nexus3',
               protocol: 'https',
               nexusUrl: 'repo.cloud.cnaf.infn.it',
-              version: '1.0.0',
+              version: RELEASE_VERSION,
               repository: 'sts-wire',
               groupId: '',
               credentialsId: 'nexus-credentials',
