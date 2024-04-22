@@ -2,6 +2,16 @@ pipeline {
   agent none
   
   stages {
+
+        stage('Cleanup Workspace') {
+          agent {
+                node { label 'jenkinsworker00' }
+            }
+            options { skipDefaultCheckout() }
+            steps {
+                cleanWs()
+            }
+        }
         stage('Build') {
             agent {
                 docker {
@@ -21,6 +31,7 @@ pipeline {
         }
         
         stage('Upload to Nexus'){
+          when { tag "v*" }
           agent {
                 node { label 'jenkinsworker00' }
             }
