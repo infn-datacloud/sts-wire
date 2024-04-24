@@ -30,7 +30,7 @@ pipeline {
             agent {
                 docker {
                   label 'jenkinsworker00'
-                  image 'marica/golang:1.21.0-patch'
+                  image 'harbor.cloud.infn.it/jenkins-ci/go1.21.0:main'
                   reuseNode true
                 }
             }
@@ -38,6 +38,7 @@ pipeline {
                 script {
                   sh '''
                   export GOCACHE=$WORKSPACE/.cache/go-build
+                  export GOPATH=$WORKSPACE/go
                   make build-linux-with-rclone
                   '''
                 }  
